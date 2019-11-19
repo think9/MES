@@ -9,9 +9,7 @@ import math
 print "Client start.."
 
 analysis = Analysis()
-
-con = oracle.connect('admin/qwerty123@team.cltj4pcb9vnc.ap-northeast-2.rds.amazonaws.com:1521/DATABASE')
-cur = con.cursor()
+db = DB()
 
 while True:
     if os.path.exists('./img/frame.png'):
@@ -26,8 +24,7 @@ while True:
         x, y, test,stonetype = analysis.process(frame, 90, 43, 18.2)
 	print x, y
 	cv2.imwrite('./img/test.png', test)
-        cur.execute("insert into info(width, height, volume, img, distance, time,type) values({}, {}, {}, '{}', {}, '{}','{}')".format(x, y, math.pi*(x/2)**2/3, filename, 35, date,stonetype))
-        con.commit()
+        db.volume_insert(x, y, filename, date, stonetype)
         print "Done!"
     else:
 	print "Waiting.."
